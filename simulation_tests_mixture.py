@@ -42,20 +42,12 @@ for f in glob(path + '/run_*'):
                 params = {
                     'algorithm' : algorithm,
                     'method'    : method,
-                    'n'         : n,
-                    'scale'     : False
+                    'n'         : n
                 }
-                if 'Zhuang' in algorithm or 'detmax' in algorithm:
+                if 'Zhuang' in algorithm:
                     params['initial_guess'] = rho
-                elif 'ransac' in algorithm:
-                    params |= {
-                        'min_data'    : 3,
-                        'max_iter'    : 100,
-                        'threshold'   : (2, 0.05),
-                        'min_inliers' : .3 * len(trajectories[0])
-                    }
 
-                T, s, cost = calibrate(trajectories[0], trajectories[1], **params)
+                T = calibrate(trajectories[0], trajectories[1], **params)
 
                 try:
                     err_tr, err_R = get_relative_error(trajectories_rel[0],
